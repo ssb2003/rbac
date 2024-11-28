@@ -6,6 +6,7 @@ import {
   ErrorComponent,
   ThemedLayoutV2,
   ThemedSiderV2,
+  ThemedTitleV2,
   useNotificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
@@ -36,7 +37,6 @@ import {
 function App() {
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <AntdApp>
@@ -47,7 +47,7 @@ function App() {
                 dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
                 resources={[
                   {
-                    name: "blog_posts",
+                    name: "Users",
                     list: "/blog-posts",
                     create: "/blog-posts/create",
                     edit: "/blog-posts/edit/:id",
@@ -79,6 +79,9 @@ function App() {
                     element={
                       <ThemedLayoutV2
                         Header={() => <Header sticky />}
+                        Title={(titleProps) => {
+                          return <ThemedTitleV2 {...titleProps} text="Admin Panel" />;
+                        }}
                         Sider={(props) => <ThemedSiderV2 {...props} fixed />}
                       >
                         <Outlet />

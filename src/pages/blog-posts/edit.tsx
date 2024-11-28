@@ -19,7 +19,7 @@ export const BlogPostEdit = () => {
     <Edit saveButtonProps={saveButtonProps} isLoading={formLoading}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label={"Title"}
+          label={"Name"}
           name={["title"]}
           rules={[
             {
@@ -41,7 +41,7 @@ export const BlogPostEdit = () => {
           <MDEditor data-color-mode="light" />
         </Form.Item>
         <Form.Item
-          label={"Category"}
+          label={"Permissions"}
           name={["category", "id"]}
           initialValue={formProps?.initialValues?.category?.id}
           rules={[
@@ -55,7 +55,7 @@ export const BlogPostEdit = () => {
         <Form.Item
           label={"Status"}
           name={["status"]}
-          initialValue={"draft"}
+          initialValue={"onProcess"}
           rules={[
             {
               required: true,
@@ -63,10 +63,10 @@ export const BlogPostEdit = () => {
           ]}
         >
           <Select
-            defaultValue={"draft"}
+            defaultValue={"onProcess"}
             options={[
-              { value: "draft", label: "Draft" },
-              { value: "published", label: "Published" },
+              { value: "onProcess", label: "onProcess" },
+              { value: "accepted", label: "Accepted" },
               { value: "rejected", label: "Rejected" },
             ]}
             style={{ width: 120 }}

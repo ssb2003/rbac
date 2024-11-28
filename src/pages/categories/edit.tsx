@@ -8,7 +8,7 @@ export const CategoryEdit = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label={"Title"}
+          label={"Role"}
           name={["title"]}
           rules={[
             {
@@ -18,6 +18,7 @@ export const CategoryEdit = () => {
         >
           <Input />
         </Form.Item>
+        
       </Form>
     </Edit>
   );

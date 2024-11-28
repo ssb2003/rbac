@@ -13,7 +13,7 @@ export const BlogPostCreate = () => {
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label={"Title"}
+          label={"Name"}
           name={["title"]}
           rules={[
             {
@@ -24,7 +24,7 @@ export const BlogPostCreate = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label={"Content"}
+          label={"Permissions"}
           name="content"
           rules={[
             {
@@ -48,7 +48,7 @@ export const BlogPostCreate = () => {
         <Form.Item
           label={"Status"}
           name={["status"]}
-          initialValue={"draft"}
+          initialValue={"onProcess"}
           rules={[
             {
               required: true,
@@ -56,10 +56,10 @@ export const BlogPostCreate = () => {
           ]}
         >
           <Select
-            defaultValue={"draft"}
+            defaultValue={"onProcess"}
             options={[
-              { value: "draft", label: "Draft" },
-              { value: "published", label: "Published" },
+              { value: "onProcess", label: "onProcess" },
+              { value: "accepted", label: "Accepted" },
               { value: "rejected", label: "Rejected" },
             ]}
             style={{ width: 120 }}

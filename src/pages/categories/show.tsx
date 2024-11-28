@@ -16,6 +16,7 @@ export const CategoryShow = () => {
       <TextField value={record?.id} />
       <Title level={5}>{"Title"}</Title>
       <TextField value={record?.title} />
+      
     </Show>
   );
 };

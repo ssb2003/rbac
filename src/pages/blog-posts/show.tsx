@@ -22,9 +22,9 @@ export const BlogPostShow = () => {
     <Show isLoading={isLoading}>
       <Title level={5}>{"ID"}</Title>
       <TextField value={record?.id} />
-      <Title level={5}>{"Title"}</Title>
+      <Title level={5}>{"Name"}</Title>
       <TextField value={record?.title} />
-      <Title level={5}>{"Content"}</Title>
+      <Title level={5}>{"Permissions"}</Title>
       <MarkdownField value={record?.content} />
       <Title level={5}>{"Category"}</Title>
       <TextField

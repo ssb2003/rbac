@@ -7,11 +7,12 @@ import {
   ShowButton,
   useTable,
 } from "@refinedev/antd";
-import { type BaseRecord, useMany } from "@refinedev/core";
-import { Space, Table } from "antd";
+import { BaseRecord, useMany } from "@refinedev/core";
+import { Space, Table, Input, Select, Form } from "antd";
+import { useState } from "react";
 
 export const BlogPostList = () => {
-  const { tableProps } = useTable({
+  const { tableProps, searchFormProps } = useTable({
     syncWithLocation: true,
   });
 
@@ -26,14 +27,67 @@ export const BlogPostList = () => {
     },
   });
 
+  const [searchText, setSearchText] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+
+  // Dynamic filtering for the table
+  const filteredData = tableProps?.dataSource?.filter((row) => {
+    if (searchText) {
+      const keyword = searchText.toLowerCase();
+      return (
+        row.title?.toString().toLowerCase().includes(keyword) ||
+        row.content?.toString().toLowerCase().includes(keyword)
+      );
+    }
+    return true;
+  }).filter((row) => {
+    if (selectedCategory) {
+      return row.category?.id === selectedCategory;
+    }
+    return true;
+  });
+
   return (
     <List>
-      <Table {...tableProps} rowKey="id">
+      {/* Search and Filter Section */}
+      <Form {...searchFormProps} layout="inline" style={{ marginBottom: 16 }}>
+        <Form.Item name="title" label="Search" style={{ marginRight: 16 }}>
+          <Input
+            placeholder="Search by title or content"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ marginBottom: 16, width: "300px" }}
+          />
+        </Form.Item>
+
+        <Form.Item name="category" label="Category" style={{ marginRight: 16 }}>
+          <Select
+            placeholder="Filter by category"
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+            options={
+              categoryData?.data?.map((category) => ({
+                label: category.title,
+                value: category.id,
+              })) ?? []
+            }
+            style={{ width: 200 }}
+            loading={categoryIsLoading}
+          />
+        </Form.Item>
+      </Form>
+
+      {/* Table for displaying blog posts */}
+      <Table
+        {...tableProps}
+        dataSource={filteredData} // Use filtered data for rendering
+        rowKey="id"
+      >
         <Table.Column dataIndex="id" title={"ID"} />
-        <Table.Column dataIndex="title" title={"Title"} />
+        <Table.Column dataIndex="title" title={"Name"} />
         <Table.Column
           dataIndex="content"
-          title={"Content"}
+          title={"Permissions"}
           render={(value: any) => {
             if (!value) return "-";
             return <MarkdownField value={value.slice(0, 80) + "..."} />;
@@ -41,7 +95,7 @@ export const BlogPostList = () => {
         />
         <Table.Column
           dataIndex={"category"}
-          title={"Category"}
+          title={"Role"}
           render={(value) =>
             categoryIsLoading ? (
               <>Loading...</>
