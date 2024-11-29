@@ -8,8 +8,9 @@ import {
   useTable,
 } from "@refinedev/antd";
 import { BaseRecord, useMany } from "@refinedev/core";
-import { Space, Table, Input, Select, Form } from "antd";
+import { Space, Table, Input, Select, Form, Button, Dropdown, Menu } from "antd";
 import { useState } from "react";
+import { DownOutlined } from "@ant-design/icons";
 
 export const BlogPostList = () => {
   const { tableProps, searchFormProps } = useTable({
@@ -29,23 +30,46 @@ export const BlogPostList = () => {
 
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [selectedStatus, setSelectedStatus] = useState<string | undefined>();
 
   // Dynamic filtering for the table
-  const filteredData = tableProps?.dataSource?.filter((row) => {
-    if (searchText) {
-      const keyword = searchText.toLowerCase();
-      return (
-        row.title?.toString().toLowerCase().includes(keyword) ||
-        row.content?.toString().toLowerCase().includes(keyword)
-      );
-    }
-    return true;
-  }).filter((row) => {
-    if (selectedCategory) {
-      return row.category?.id === selectedCategory;
-    }
-    return true;
-  });
+  const filteredData = tableProps?.dataSource
+    ?.filter((row) => {
+      if (searchText) {
+        const keyword = searchText.toLowerCase();
+        return (
+          row.title?.toString().toLowerCase().includes(keyword) ||
+          row.content?.toString().toLowerCase().includes(keyword)
+        );
+      }
+      return true;
+    })
+    .filter((row) => {
+      if (selectedCategory) {
+        return row.category?.id === selectedCategory;
+      }
+      return true;
+    })
+    .filter((row) => {
+      if (selectedStatus) {
+        return row.status === selectedStatus;
+      }
+      return true;
+    })
+    // Sort by createdAt in descending order manually
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  // Dropdown menu for status filter
+  const statusMenu = (
+    <Menu
+      onClick={({ key }) => setSelectedStatus(key === "all" ? undefined : key)}
+    >
+      <Menu.Item key="all">All Statuses</Menu.Item>
+      <Menu.Item key="accepted">Accepted</Menu.Item>
+      <Menu.Item key="onProcess">onProcess</Menu.Item>
+      <Menu.Item key="rejectedd">Rejected</Menu.Item>
+    </Menu>
+  );
 
   return (
     <List>
@@ -75,12 +99,21 @@ export const BlogPostList = () => {
             loading={categoryIsLoading}
           />
         </Form.Item>
+
+        <Form.Item name="status" label="Status" style={{ marginRight: 16 }}>
+          <Dropdown overlay={statusMenu} trigger={["click"]}>
+            <Button>
+              {selectedStatus ? selectedStatus : "Filter by Status"}{" "}
+              <DownOutlined />
+            </Button>
+          </Dropdown>
+        </Form.Item>
       </Form>
 
       {/* Table for displaying blog posts */}
       <Table
         {...tableProps}
-        dataSource={filteredData} // Use filtered data for rendering
+        dataSource={filteredData} // Use filtered and manually sorted data
         rowKey="id"
       >
         <Table.Column dataIndex="id" title={"ID"} />
@@ -105,11 +138,7 @@ export const BlogPostList = () => {
           }
         />
         <Table.Column dataIndex="status" title={"Status"} />
-        <Table.Column
-          dataIndex={["createdAt"]}
-          title={"Created at"}
-          render={(value: any) => <DateField value={value} />}
-        />
+        
         <Table.Column
           title={"Actions"}
           dataIndex="actions"
@@ -125,3 +154,5 @@ export const BlogPostList = () => {
     </List>
   );
 };
+
+

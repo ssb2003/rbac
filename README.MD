@@ -14,6 +14,7 @@ The project structure was initialized using **npx superplate-cli**, with the **R
 4. [Setup Instructions](#setup-instructions)  
 5. [Features](#features)  
 6. [Screenshots](#screenshots)  
+7. [Notes](#notes)
 
 ---
 
@@ -61,7 +62,7 @@ The **User Management System** facilitates user and role management. Key functio
 - **Node.js (v14 or higher):** Required to run the application.  
 - **npm or yarn:** For managing dependencies.  
 
-
+---
 
 ## Setup Instructions
 
@@ -72,3 +73,9 @@ git clone https://github.com/ssb2003/rbac
 cd rbac
 npm install
 npm run dev
+
+## Notes
+
+- **New Users:** After creating new users, they may initially appear on the last page of the users' list due to the pagination mechanism. Please navigate to the last page to view newly added users.
+
+- **Search/Filter Functionality:** Once the page has loaded, you can apply search or filter functionality to find users based on specific criteria (such as name, status or role). These functions will work across all pages, including newly added users that may be on the last page.
